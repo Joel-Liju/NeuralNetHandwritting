@@ -2,6 +2,8 @@ import random
 import math
 def activation(value):
     return 1/(1+math.pow(math.e,-value))
+def derActivation(value):
+    return activation(value)*(1-activation(value))
 """
 this is the node class
 """
@@ -9,9 +11,17 @@ class Node:
     def __init__(self):
         self.input = 0
         self.output = 0
+        self.DO = 0
+        self.DI = 0
         pass
     def addinput(self, input):
         self.input = self.input + input
+    """
+    this function calculates the error for each node
+    """
+    def calculateError(self,expectedVal):
+        self.DO = self.output - expectedVal
+        self.DI = self.DO * derActivation(self.input)
     """
     This function is used to pass the value forward
     """
@@ -36,6 +46,11 @@ class Layer:
         self.nodes = []
         for i in range(layersize):
             self.nodes.append(Node())
+    """
+    calculates the error for each node in the layer
+    """
+    def calculateError(self):
+        pass
     """
     takes the activation function and sets the output 
     """
@@ -85,4 +100,18 @@ class NeuralNet:
                 except:
                     #output layer
                     pass
+    """
+    this function calculates the error for the neural network
+    """
+    def calculateError(self,output):
+        meanSqauareError = 0
+        for i in range(len(output)):#for each output
+            meanSqauareError = meanSqauareError + (pow(output-self.layers[len(self.layers)-1],2))/2.0#gets the mean squared error
+        pass
+    """
+    this does the backward pass.
+    """
+    def backwardPass(self):
+
+        pass
             #self.layers[len(self.layers)-1].setOutput(output)#setting the outputs for training.
